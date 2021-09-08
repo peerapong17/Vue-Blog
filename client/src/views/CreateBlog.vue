@@ -39,12 +39,15 @@
           label="Content"
           required
         />
-        <v-btn @click="onCreateBlog" x-large color="success" class="mt-3" block
+        <v-select :items="categories" filled label="Category" v-model="category"></v-select>
+        <div class="btn-container">
+          <v-btn @click="onCreateBlog" large  color="success" class="mr-2"
           >Create</v-btn
         >
-        <v-btn @click="onCancel" x-large outlined color="red" class="mt-3" block
+        <v-btn @click="onCancel" large dark color="red"
           >Cancel</v-btn
         >
+        </div>
       </v-form>
       <v-alert
         dismissible
@@ -69,8 +72,10 @@ export default {
     return {
       title: "",
       content: "",
+      category: "",
       imageUrl: "",
       imageFile: "",
+      categories: ["Travel", "Food", "Culture", "Tradition"],
     };
   },
   methods: {
@@ -80,6 +85,7 @@ export default {
         const payload = {
           title: this.title,
           content: this.content,
+          category: this.category,
           imageFile: this.imageFile,
         };
         await this.createBlog(payload);
@@ -111,4 +117,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+  .btn-container{
+    display: flex;
+    justify-content: flex-end;
+  }
+</style>

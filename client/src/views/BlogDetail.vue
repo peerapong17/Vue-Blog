@@ -8,6 +8,12 @@
             blog.title
           }}</v-card-title>
           <v-card-text>{{ blog.content }}</v-card-text>
+          <div class="d-flex justify-space-between mx-3 mb-2">
+            <v-chip small dark color="green">
+              {{ blog.category }}
+            </v-chip>
+            <span>{{ created_at }}</span>
+          </div>
           <v-divider class="mx-4"></v-divider>
           <v-card-actions>
             <v-rating icon-label="custom icon label text {0} of {1}"></v-rating>
@@ -49,6 +55,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import Comment from "../components/Comment.vue";
 import { mapState, mapActions } from "vuex";
 export default {
@@ -58,14 +65,22 @@ export default {
       comment: "",
       isLiked: false,
       comments: {},
+      created_at: ""
     };
   },
   async created() {
+    this.created_at = moment(this.blog.created_at).fromNow()
+    console.log(this.blog.created_at)
     await this.fetchSpicificData(this.$route.params.blog_id);
     this.isLiked = this.blog.like.includes(localStorage.getItem("id"));
   },
   methods: {
-    ...mapActions(["fetchSpicificData", "addLike", "addComment", "deleteComment"]),
+    ...mapActions([
+      "fetchSpicificData",
+      "addLike",
+      "addComment",
+      "deleteComment",
+    ]),
     async onAddLike() {
       await this.addLike(this.$route.params.blog_id);
       this.isLiked = this.blog.like.includes(localStorage.getItem("id"));
@@ -74,14 +89,14 @@ export default {
       if (this.comment.trim() !== "") {
         const payload = {
           comment: this.comment,
-          blogId: this.$route.params.blog_id
-        }
-        await this.addComment(payload)
+          blogId: this.$route.params.blog_id,
+        };
+        await this.addComment(payload);
         this.comment = "";
       }
     },
     async onDeleteComment(id) {
-      await this.deleteComment(id)
+      await this.deleteComment(id);
       const commentIndex = this.blog.comments
         .map((comment) => comment.id)
         .indexOf(id);

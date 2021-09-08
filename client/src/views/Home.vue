@@ -9,6 +9,8 @@
         :image="blog.imagePath"
         :id="blog.id"
         :like="blog.like"
+        :category="blog.category"
+        :created_at="blog.created_at"
       />
     </v-row>
   </v-container>

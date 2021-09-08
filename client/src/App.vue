@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer color="#1356ba" v-model="drawer" app>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="text-h6">
+          <v-list-item-title class="text-h6 white--text">
             {{ username }}
           </v-list-item-title>
-          <v-list-item-subtitle>
+          <v-list-item-subtitle class="text-h6 white--text">
             {{ id }}
           </v-list-item-subtitle>
         </v-list-item-content>
@@ -22,31 +22,30 @@
           :to="{ name: item.link }"
         >
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon class="white--text">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar color="#1356ba" app>
+      <v-app-bar-nav-icon color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Todo</v-toolbar-title>
+      <v-toolbar-title class="white--text">Blog</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         @click="dialog = true"
-        large
         color="red lighten-1"
         class="white--text"
         >Logout<v-icon right>mdi-logout</v-icon></v-btn
       >
     </v-app-bar>
 
-    <v-main>
+    <v-main class="v-main">
       <router-view></router-view>
     </v-main>
     <v-dialog v-model="dialog" max-width="290">
@@ -94,15 +93,19 @@ export default {
   },
   methods: {
     ...mapActions(["logout"]),
-    async onLogout() {
-      await this.logout();
-      this.dialog = false;
-      localStorage.clear();
-      this.$router.push("/login");
+    onLogout() {
+      this.logout().then(() => {
+        this.dialog = false;
+        localStorage.clear();
+        this.$router.push({name: "Login"});
+      });
     },
   },
   computed: {
-    ...mapState(["items"])
-  }
+    ...mapState(["items"]),
+  },
 };
 </script>
+
+<style scoped>
+</style>

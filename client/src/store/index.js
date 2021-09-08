@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
-import { router } from "../router/index";
 
 Vue.use(Vuex);
 
@@ -64,9 +63,10 @@ export default new Vuex.Store({
       const formData = new FormData();
       formData.append("title", payload.title);
       formData.append("content", payload.content);
+      formData.append("category", payload.category);
       formData.append("image", payload.imageFile);
       try {
-        await axios.request("http://localhost:3000/blog/crate", {
+        await axios.request("http://localhost:3000/blog/create", {
           method: "POST",
           data: formData,
           headers: {
@@ -198,7 +198,6 @@ export default new Vuex.Store({
       await axios.request("http://localhost:3000/user/logout", {
         method: "GET",
       });
-      router.push("/login");
     },
   },
   modules: {},
