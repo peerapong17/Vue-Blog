@@ -6,7 +6,7 @@
       align-content="center"
     >
       <v-col md="4" sm="8" class="d-flex justify-center">
-        <v-card elevation="3" class="pa-6 rounded-lg" width="100%">
+        <v-card elevation="3" class="card pa-6 rounded-lg" width="100%">
           <v-form ref="form" lazy-validation>
             <span class="text-center d-block mb-6 display-1 font-weight-bold "
               >Login</span
@@ -27,9 +27,14 @@
               type="password"
             ></v-text-field>
           </v-form>
-          <router-link :to="{ name: 'Register' }" class="text-end d-block mb-4"
-            >Don't have an account?</router-link
-          >
+          <div class="createAccountOrForgetPasswordBox">
+            <router-link :to="{ name: 'Register' }" class="createAccount"
+              >Don't have an account?</router-link
+            >
+            <router-link :to="{ name: 'EnterEmail' }" class="forgetPassword"
+              >Forget Password?</router-link
+            >
+          </div>
 
           <v-btn
             :loading="isLoading"
@@ -46,7 +51,8 @@
             elevation="1"
             class="mt-2"
             style="width: 100%"
-            ><v-icon dense left class="mr-3">mdi-google</v-icon>
+            @click="googleSignin"
+            ><img src="@/assets/google.jpg" width="25" class="mr-2" />
             <h3>Login with Google</h3></v-btn
           >
         </v-card>
@@ -91,6 +97,9 @@ export default {
         }
       }
     },
+    googleSignin() {
+      window.open("http://localhost:3000/auth/google", "_self");
+    },
   },
   computed: {
     ...mapState(["error", "isLoading"]),
@@ -101,11 +110,23 @@ export default {
 };
 </script>
 
-<style>
-.text-end {
+<style scope>
+.card {
+  max-width: 400px;
+}
+.createAccountOrForgetPasswordBox {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.forgetPassword,
+.createAccount {
   text-decoration: none;
 }
-.text-end:hover {
+
+.forgetPassword:hover,
+.createAccount:hover {
   text-decoration: underline;
 }
 </style>

@@ -1,11 +1,13 @@
-import { Comment } from './entity/Comment';
+import { Comment } from "./entity/Comment";
 import "reflect-metadata";
 import { User } from "./entity/User";
 import { createConnection } from "typeorm";
 import { Blog } from "./entity/Blog";
+import { Token } from "./entity/Token";
 import { passportConfigs } from "./configs/passport";
 import { jwtConfigs } from "./configs/jwt";
-import { userRoute, blogRoute, commentRoute } from './route';
+import { googlePassportConfigs } from "./configs/google";
+import { userRoute, blogRoute, commentRoute, googleRoute, resetPasswordRoute } from "./route";
 import express from "express";
 import cors from "cors";
 import path from "path";
@@ -21,7 +23,7 @@ createConnection({
   username: "root",
   password: "",
   database: "App",
-  entities: [Blog, User, Comment],
+  entities: [Blog, User, Comment, Token],
   synchronize: true,
 })
   .then(async (connection) => {
@@ -56,15 +58,14 @@ jwtConfigs(passport);
 
 passportConfigs(passport);
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Authorization, Accept");
-//   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, HEAD, OPTIONS");  
-//   next();
-// });
+googlePassportConfigs(passport);
 
-app.use("/comment", commentRoute)
+app.use("/comment", commentRoute);
 
 app.use("/blog", blogRoute);
 
 app.use("/user", userRoute);
+
+app.use("/auth/google", googleRoute);
+
+app.use("/reset-password", resetPasswordRoute);

@@ -1,16 +1,30 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
+import Login from "../views/auth/Login.vue";
+import Register from "../views/auth/Register.vue";
+import EnterEmail from "../views/auth/EnterEmail.vue";
+import EnterNewPassword from "../views/auth/EnterNewPassword.vue";
 import Home from "../views/Home.vue";
-import CreateBlog from "../views/CreateBlog.vue";
-import BlogDetail from "../views/BlogDetail.vue";
-import UserBlog from "../views/UserBlog.vue";
-import EditBlog from "../views/EditBlog.vue";
+import CreateBlog from "../views/blog/CreateBlog.vue";
+import BlogDetail from "../views/blog/BlogDetail.vue";
+import UserBlog from "../views/blog/UserBlog.vue";
+import EditBlog from "../views/blog/EditBlog.vue";
 
 Vue.use(VueRouter);
 
+// const authGuard = (to, from, next) => {
+//   if (!localStorage.getItem("id")) {
+//     next({ name: "Login" });
+//   } else {
+//     next();
+//   }
+// };
+
 const routes = [
+  {
+    path: "/",
+    redirect: "/login",
+  },
   {
     path: "/login",
     name: "Login",
@@ -20,6 +34,17 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+  },
+  {
+    path: "/reset-password/enter-email",
+    name: "EnterEmail",
+    component: EnterEmail,
+  },
+  {
+    path: "/reset-password/enter-new-password/:userId/:token",
+    name: "EnterNewPassword",
+    component: EnterNewPassword,
+    props: true,
   },
   {
     path: "/home",

@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     blog: {},
     error: "",
+    success: "",
     blogList: [],
     isLoading: false,
     items: [
@@ -29,6 +30,9 @@ export default new Vuex.Store({
     },
     gotError(state, payload) {
       state.error = payload;
+    },
+    createUserSuccess(state, payload) {
+      state.success = payload;
     },
     isLoading(state) {
       state.isLoading = true;
@@ -187,6 +191,7 @@ export default new Vuex.Store({
           data: payload,
           withCredential: true,
         });
+        context.commit("createUserSuccess", "Create user success");
         context.commit("isNotLoading");
       } catch (error) {
         context.commit("gotError", error.response.data.message);

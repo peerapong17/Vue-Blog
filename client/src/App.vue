@@ -26,21 +26,23 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="white--text">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar color="#1356ba" app>
-      <v-app-bar-nav-icon color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        color="white"
+        @click="drawer = !drawer"
+      ></v-app-bar-nav-icon>
 
       <v-toolbar-title class="white--text">Blog</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        @click="dialog = true"
-        color="red lighten-1"
-        class="white--text"
+      <v-btn @click="dialog = true" color="red lighten-1" class="white--text"
         >Logout<v-icon right>mdi-logout</v-icon></v-btn
       >
     </v-app-bar>
@@ -97,7 +99,7 @@ export default {
       this.logout().then(() => {
         this.dialog = false;
         localStorage.clear();
-        this.$router.push({name: "Login"});
+        this.$router.push({ name: "Login" });
       });
     },
   },
@@ -107,5 +109,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

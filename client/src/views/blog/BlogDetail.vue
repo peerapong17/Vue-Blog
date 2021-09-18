@@ -56,7 +56,7 @@
 
 <script>
 import moment from 'moment'
-import Comment from "../components/Comment.vue";
+import Comment from "../../components/Comment.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   components: { Comment },
@@ -70,7 +70,6 @@ export default {
   },
   async created() {
     this.created_at = moment(this.blog.created_at).fromNow()
-    console.log(this.blog.created_at)
     await this.fetchSpicificData(this.$route.params.blog_id);
     this.isLiked = this.blog.like.includes(localStorage.getItem("id"));
   },

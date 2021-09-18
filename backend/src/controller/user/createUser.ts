@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../../entity/User";
 import bcrypt from "bcrypt";
-import { validationResult } from "express-validator";
 
 export const createUser = async (req: Request, res: Response) => {
   // const errors = validationResult(req);

@@ -1,12 +1,15 @@
 <template>
-  <v-container fluid style="height: 100%">
+  <v-container fluid style="height: 100%;" class="container">
     <v-row
       justify="center"
       style="height: 100% ; position: relative"
       align-content="center"
     >
       <v-col md="4" sm="8" class="d-flex justify-center">
-        <v-card elevation="3" class="pa-6 rounded-lg" width="100%">
+        <v-card elevation="3" class="card pa-6 rounded-lg" width="100%">
+          <span class="text-center d-block mb-6 display-1 font-weight-bold "
+            >Register</span
+          >
           <v-form ref="form" lazy-validation>
             <v-text-field
               background-color="#fff2ff"
@@ -46,12 +49,15 @@
               prepend-inner-icon="mdi-restart"
               label="Confirm-Password"
               solo
-              :rules="[(v) => !!v || 'confirmPassword is required']"
+              :rules="[
+                (v) => !!v || 'confirmPassword is required',
+                (v) => password === confirmPassword || 'password must match',
+              ]"
               v-model="confirmPassword"
               required
             ></v-text-field>
           </v-form>
-          <router-link :to="{ name: 'Login' }" class="text-end d-block mb-4"
+          <router-link :to="{ name: 'Login' }" class="login"
             >Already have an account?</router-link
           >
           <v-btn
@@ -71,9 +77,9 @@
           dismissible
           text
           width="450"
-          :value="error !== ''"
-          type="error"
-          >{{ error }}</v-alert
+          :value="error || success !== ''"
+          :type="error ? 'error' : 'success'"
+          >{{ error ? error : success }}</v-alert
         >
       </v-col>
     </v-row>
@@ -103,13 +109,15 @@ export default {
         };
         await this.createUser(user);
         if (this.error === "") {
-          this.$router.push("/login");
+          setTimeout(() => {
+            this.$router.push({ name: "Login" });
+          }, 5000);
         }
       }
     },
   },
   computed: {
-    ...mapState(["isLoading", "error"]),
+    ...mapState(["isLoading", "error", "success"]),
   },
   destroyed() {
     this.gotError("");
@@ -117,11 +125,18 @@ export default {
 };
 </script>
 
-<style>
-.text-end {
-  text-decoration: none;
+<style scoped>
+.card {
+  max-width: 400px;
 }
-.text-end:hover {
+
+.login {
+  text-decoration: none;
+  margin-bottom: 10px;
+  float: right;
+}
+
+.login:hover {
   text-decoration: underline;
 }
 </style>

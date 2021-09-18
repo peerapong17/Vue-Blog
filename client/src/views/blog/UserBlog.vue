@@ -16,7 +16,7 @@
 
 <script>
 import axios from "axios";
-import UserBlogCard from "../components/UserBlogCard.vue";
+import UserBlogCard from "../../components/UserBlogCard.vue";
 export default {
   components: { UserBlogCard },
   data() {

@@ -1,6 +1,5 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import * as userController from "../controller/index";
-import { check } from "express-validator";
 
 const router = express.Router();
 
@@ -22,6 +21,8 @@ router.post(
   // ],
   userController.createUser
 );
+
+router.post("/forget-password", userController.forgetPassword);
 
 router.post("/login", userController.loginUser);
 

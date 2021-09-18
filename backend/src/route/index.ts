@@ -1,3 +1,5 @@
 export { default as blogRoute} from './blog'
 export { default as commentRoute} from './comment'
 export { default as userRoute} from './user'
+export { default as googleRoute} from './google'
+export { default as resetPasswordRoute} from './resetPassword'
