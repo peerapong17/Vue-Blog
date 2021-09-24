@@ -6,7 +6,6 @@ export const sendEmail = async (
   subject: string,
   link: string
 ) => {
-  console.log(email, subject, link);
 
   try {
     const transporter = nodemailer.createTransport({
@@ -20,8 +19,6 @@ export const sendEmail = async (
         refreshToken: process.OAUTH_REFRESH_TOKEN,
       },
     });
-
-    console.log(email, subject, link);
 
     transporter
       .sendMail({

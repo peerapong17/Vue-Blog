@@ -18,9 +18,9 @@ export const addComment = async (req: Request, res: Response) => {
 
     comment.comment = req.body.comment as string;
 
-    blog.comments.unshift(comment);
-
     await comment.save();
+
+    blog.comments.unshift(comment);
 
     await blog.save();
 

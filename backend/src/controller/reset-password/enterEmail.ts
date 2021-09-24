@@ -33,7 +33,7 @@ export const enterEmail = async (req: Request, res: Response) => {
     });
   } catch (error) {
     res.status(400).json({
-      message: "An error occured",
+      message: error,
     });
   }
 };

@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
   PrimaryColumn,
   BeforeInsert,
+  OneToMany,
 } from "typeorm";
 import { v4 as uuid4 } from "uuid";
+import { Blog } from "./Blog";
 
 @Entity()
 export class User extends BaseEntity {
@@ -27,6 +29,9 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Blog, (blog) => blog.user)
+  blogs: Blog[];
 
   @CreateDateColumn()
   public created_at: Date;

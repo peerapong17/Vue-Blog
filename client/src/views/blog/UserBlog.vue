@@ -34,7 +34,7 @@ export default {
         },
       }
     );
-    this.blogList = data.blog;
+    this.blogList = data.blogs;
   },
 };
 </script>

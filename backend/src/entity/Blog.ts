@@ -7,9 +7,12 @@ import {
   PrimaryColumn,
   BeforeInsert,
   OneToMany,
+  JoinColumn,
+  ManyToOne,
 } from "typeorm";
 import { v4 as uuid4 } from "uuid";
 import { Comment } from "./Comment";
+import { User } from "./User";
 
 @Entity()
 export class Blog extends BaseEntity {
@@ -36,16 +39,17 @@ export class Blog extends BaseEntity {
   @Column()
   imagePath: string;
 
-  @Column()
-  userId: string;
-
   @Column({
     type: "simple-array",
   })
   like: string[];
 
-  @OneToMany(() => Comment,comment => comment.blog)
+  @OneToMany(() => Comment, (comment) => comment.blog)
   comments: Comment[];
+
+  @ManyToOne(() => User, (user) => user.blogs, { onDelete: 'CASCADE' })
+  @JoinColumn({name: "user_id"})
+  user: User
 
   @CreateDateColumn()
   created_at: Date;
