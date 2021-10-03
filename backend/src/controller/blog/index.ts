@@ -4,4 +4,5 @@ export * from "./deleteBlog";
 export * from "./getSpicificBlog";
 export * from "./updateBlog";
 export * from './getUserBlog'
+export * from './getBlogByCategory'
 

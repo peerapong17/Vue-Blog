@@ -9,9 +9,11 @@
           }}</v-card-title>
           <v-card-text>{{ blog.content }}</v-card-text>
           <div class="d-flex justify-space-between mx-3 mb-2">
+            <router-link :to="{name: 'GetBlogByCategory', params: {category: blog.category }}" class="category">
             <v-chip small dark color="green">
               {{ blog.category }}
             </v-chip>
+            </router-link>
             <span>{{ created_at }}</span>
           </div>
           <v-divider class="mx-4"></v-divider>
@@ -108,4 +110,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+    .category{
+    text-decoration: none;
+  }
+</style>

@@ -42,7 +42,17 @@
 
       <v-toolbar-title class="white--text">Blog</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn @click="dialog = true" color="red lighten-1" class="white--text"
+      <v-text-field
+      class="shrink"
+      hide-details
+      single-line
+      v-model="searchInput"
+      solo
+      placeholder="Search..."
+      append-icon="mdi-magnify"
+      @click:append="onSearch"
+    ></v-text-field>
+      <v-btn @click="dialog = true" color="red lighten-1" class="white--text ml-3"
         >Logout<v-icon right>mdi-logout</v-icon></v-btn
       >
     </v-app-bar>
@@ -77,7 +87,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "App",
 
@@ -87,6 +97,7 @@ export default {
       username: "",
       dialog: false,
       drawer: false,
+      searchInput: ""
     };
   },
   created() {
@@ -95,6 +106,7 @@ export default {
   },
   methods: {
     ...mapActions(["logout"]),
+    ...mapMutations(["getBlogBySearchInput"]),
     onLogout() {
       this.logout().then(() => {
         this.dialog = false;
@@ -102,6 +114,9 @@ export default {
         this.$router.push({ name: "Login" });
       });
     },
+    onSearch(){
+      this.getBlogBySearchInput(this.searchInput)
+    }
   },
   computed: {
     ...mapState(["items"]),

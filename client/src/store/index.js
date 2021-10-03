@@ -10,6 +10,7 @@ export default new Vuex.Store({
     error: "",
     success: "",
     blogList: [],
+    copiedBlogList: [],
     isLoading: false,
     items: [
       { title: "Home", icon: "mdi-home", link: "Home" },
@@ -24,6 +25,7 @@ export default new Vuex.Store({
   mutations: {
     gotData(state, payload) {
       state.blogList = payload;
+      state.copiedBlogList = payload
     },
     updateData(state, payload) {
       state.blog = payload;
@@ -34,6 +36,11 @@ export default new Vuex.Store({
     createUserSuccess(state, payload) {
       state.success = payload;
     },
+    getBlogBySearchInput(state, value){
+      state.copiedBlogList = [...state.blogList].filter((blog)=>{
+        return blog.title.includes(value)
+      })
+    },
     isLoading(state) {
       state.isLoading = true;
     },
@@ -42,6 +49,30 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async fetchData(context) {
+      const { data } = await axios.request("http://localhost:3000/blog", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      data.blog.map(item=>{
+        console.log(item.created_at)
+        console.log(item.id)
+      })
+      context.commit("gotData", data.blog);
+    },
+
+    async fetchBlogByCategory(context, category) {
+      const { data } = await axios.request(`http://localhost:3000/blog/category/${category}`, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      context.commit("gotData", data.blogs);
+    },
+
     async fetchSpicificData(context, payload) {
       const { data } = await axios.request(
         `http://localhost:3000/blog/${payload}`,
@@ -54,15 +85,7 @@ export default new Vuex.Store({
       );
       context.commit("updateData", data.blog);
     },
-    async fetchData(context) {
-      const { data } = await axios.request("http://localhost:3000/blog", {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
-      context.commit("gotData", data.blog);
-    },
+
     async createBlog(context, payload) {
       const formData = new FormData();
       formData.append("title", payload.title);

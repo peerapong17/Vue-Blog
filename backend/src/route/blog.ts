@@ -32,6 +32,12 @@ router.get(
 );
 
 router.get(
+  "/category/:category",
+  passport.authenticate("jwt", { session: false }),
+  blogController.getBlogByCategory
+);
+
+router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   blogController.getSpicificBlog

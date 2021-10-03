@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import BlogCard from "../components/BlogCard.vue";
+import BlogCard from "../../components/BlogCard.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   components: { BlogCard },
@@ -37,16 +37,12 @@ export default {
     };
   },
   async created() {
-    await this.fetchData();
+    await this.fetchBlogByCategory(this.category);
   },
   methods: {
-    ...mapActions(["fetchData"]),
+    ...mapActions(["fetchBlogByCategory"]),
     async onFilter() {
       // await this.fetchBlogByCategory('culture')
-      // this.copiedBlogList.sort((a, b) => {
-      //   console.log(a.created_at.split("T")[0])
-      //   console.log(b.created_at.split("T")[0])
-      // })
     },
   },
   computed: {
