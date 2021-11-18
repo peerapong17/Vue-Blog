@@ -1,11 +1,12 @@
 <template>
-  <v-container fluid class="px-10 d-flex flex-column align-end">
+  <v-container fluid class="px-10 d-flex flex-column">
     <v-select
       @change="onFilter"
       class="mt-2"
       :items="items"
       label="Date"
       solo
+      :style="{ alignSelf: 'end' }"
     ></v-select>
     <v-row wrap>
       <BlogCard

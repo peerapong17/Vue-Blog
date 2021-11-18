@@ -1,6 +1,14 @@
 <template>
   <v-container>
-    <v-row justify="center">
+    <v-row v-if="isLoading" justify="center" class="mt-12">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </v-row>
+    <v-row justify="center" v-else>
       <v-col md="8" sm="8">
         <v-card elevation="2">
           <v-img class="mx-auto mt-4" :src="blog.imagePath" width="100%" />
@@ -9,12 +17,18 @@
           }}</v-card-title>
           <v-card-text>{{ blog.content }}</v-card-text>
           <div class="d-flex justify-space-between mx-3 mb-2">
-            <router-link :to="{name: 'GetBlogByCategory', params: {category: blog.category }}" class="category">
-            <v-chip small dark color="green">
-              {{ blog.category }}
-            </v-chip>
+            <router-link
+              :to="{
+                name: 'GetBlogByCategory',
+                params: { category: blog.category },
+              }"
+              class="category"
+            >
+              <v-chip small dark color="green">
+                {{ blog.category }}
+              </v-chip>
             </router-link>
-            <span>{{ created_at }}</span>
+            <span>{{ createdAtFromNow }}</span>
           </div>
           <v-divider class="mx-4"></v-divider>
           <v-card-actions>
@@ -57,7 +71,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 import Comment from "../../components/Comment.vue";
 import { mapState, mapActions } from "vuex";
 export default {
@@ -65,15 +79,10 @@ export default {
   data() {
     return {
       comment: "",
-      isLiked: false,
-      comments: {},
-      created_at: ""
     };
   },
   async created() {
-    this.created_at = moment(this.blog.created_at).fromNow()
     await this.fetchSpicificData(this.$route.params.blog_id);
-    this.isLiked = this.blog.like.includes(localStorage.getItem("id"));
   },
   methods: {
     ...mapActions([
@@ -83,8 +92,14 @@ export default {
       "deleteComment",
     ]),
     async onAddLike() {
+      if(this.isLiked){
+        this.blog.like = this.blog.like.filter(item=>{
+          return item != localStorage.getItem("id")
+        })
+      } else {
+        this.blog.like.push(localStorage.getItem("id"))
+      }
       await this.addLike(this.$route.params.blog_id);
-      this.isLiked = this.blog.like.includes(localStorage.getItem("id"));
     },
     async onAddComment() {
       if (this.comment.trim() !== "") {
@@ -105,13 +120,23 @@ export default {
     },
   },
   computed: {
-    ...mapState(["blog"]),
+    ...mapState(["blog", "isLoading"]),
+    createdAtFromNow() {
+      return moment(this.blog.created_at).fromNow();
+    },
+    isLiked() {
+      if (this.blog.like.includes(localStorage.getItem("id"))) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
-    .category{
-    text-decoration: none;
-  }
+.category {
+  text-decoration: none;
+}
 </style>

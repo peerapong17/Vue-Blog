@@ -20,6 +20,7 @@ export const createBlog = async (req: Request, res: Response) => {
       content,
       category,
       image: req.file.filename,
+      like: [],
       imagePath,
     });
     await blog.save();

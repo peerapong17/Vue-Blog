@@ -16,7 +16,15 @@
               prepend-inner-icon="mdi-account"
               label="Username"
               solo
-              :rules="[(v) => !!v || 'Username is required']"
+              :rules="[
+                (v) => !!v || 'Username is required',
+                (v) =>
+                  /^[a-zA-Z\s-\d]+$/.test(v) ||
+                  'Username cannot contain special character',
+                (v) =>
+                  (v && v.length >= 3) ||
+                  'Username should be at least 3 characters',
+              ]"
               v-model="username"
             ></v-text-field>
             <v-text-field
@@ -26,7 +34,7 @@
               solo
               :rules="[
                 (v) => !!v || 'Email is required',
-                (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+                (v) => /^([a-z-\.\d]+)@([a-z-\d]+)(\.[a-z]+)(\.[a-z]+)?$/.test(v) || 'E-mail must be valid and should be only lower case',
               ]"
               v-model="email"
             ></v-text-field>
@@ -36,9 +44,10 @@
               prepend-inner-icon="mdi-key"
               label="Password"
               :rules="[
-                (v) => !!v || 'password is required',
+                (v) => !!v || 'Password is required',
                 (v) =>
-                  (v && v.length >= 6) || 'Name must be at least 6 characters',
+                  (v && v.length >= 6) || 'Password must be at least 6 characters',
+                  (v) => /[a-z]{3,}/g.test(v) || 'Password should contain at least 3 letters'
               ]"
               solo
               v-model="password"
@@ -50,8 +59,8 @@
               label="Confirm-Password"
               solo
               :rules="[
-                (v) => !!v || 'confirmPassword is required',
-                (v) => password === confirmPassword || 'password must match',
+                (v) => !!v || 'Confirm Password is required',
+                (v) => password === confirmPassword || 'Password must match',
               ]"
               v-model="confirmPassword"
               required

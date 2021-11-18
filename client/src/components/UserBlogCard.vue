@@ -31,19 +31,12 @@ export default {
     content: String,
     image: String,
     id: String,
-    like: Array,
+    likes: Array,
   },
   data() {
     return {
-      isLiked: false,
+      copiedLikes: this.likes,
     };
-  },
-  mounted() {
-    this.like.map((item) => {
-      if (item === localStorage.getItem("id")) {
-        this.isLiked = true;
-      }
-    });
   },
   methods: {
     ...mapActions(["addLike"]),
@@ -51,7 +44,23 @@ export default {
       this.$router.push(`/edit-blog/${this.id}`);
     },
     async onAddLike() {
+      if (this.isLiked) {
+        this.copiedLikes = this.copiedLikes.filter((item) => {
+          return item != localStorage.getItem("id");
+        });
+      } else {
+        this.copiedLikes.push(localStorage.getItem("id"));
+      }
       await this.addLike(this.id);
+    },
+  },
+  computed: {
+    isLiked() {
+      if (this.copiedLikes.includes(localStorage.getItem("id"))) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };

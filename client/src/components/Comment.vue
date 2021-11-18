@@ -2,18 +2,19 @@
   <v-card class="mb-6 px-2">
     <v-row justify="center" align="center" class="flex-nowrap px-4 py-2">
       <v-avatar color="accent" class="mr-3" size="48"></v-avatar>
-
-      <span :style="{ margin: '0px 12px' }" v-if="!isEditting">{{ text }}</span>
+      <span :style="{ margin: '0px 12px' }" v-if="!isEditting">{{
+        comment.comment
+      }}</span>
       <v-text-field
         background-color="#fafafa"
         flat
         hide-details
         v-else
         solo
-        v-model="text"
+        v-model="commentInput"
       ></v-text-field>
       <v-spacer></v-spacer>
-      <div v-if="isMyComment">
+      <div v-if="isUserComment">
         <v-btn
           @click="isEditting = !isEditting"
           v-if="!isEditting"
@@ -49,7 +50,7 @@
         comment.userId
       }}</span>
       <v-spacer></v-spacer>
-      <span :style="{ color: '#adadad' }">{{ createdAt }}</span>
+      <span :style="{ color: '#adadad' }">{{ createdAtFromNow }}</span>
     </v-row>
   </v-card>
 </template>
@@ -63,38 +64,21 @@ export default {
   },
   data() {
     return {
-      text: "",
-      createdAt: "",
+      commentInput: this.comment.comment,
       isMyComment: false,
       isEditting: false,
     };
   },
-  created() {
-    this.createdAt = moment(this.comment.updated_at).fromNow();
-    if (this.comment.userId === localStorage.getItem("id")) {
-      this.isMyComment = true;
-    }
-    this.text = this.comment.comment;
-  },
   methods: {
     async onUpdateComment() {
       this.isEditting = !this.isEditting;
+      this.comment.comment = this.commentInput;
+
       await axios.request(
         `http://localhost:3000/comment/update/${this.comment.id}`,
         {
           method: "PUT",
-          data: { comment: this.text },
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
-    },
-    async deleteComment() {
-      await axios.request(
-        `http://localhost:3000/comment/delete/${this.comment.id}`,
-        {
-          method: "DELETE",
+          data: { comment: this.commentInput },
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
@@ -104,7 +88,19 @@ export default {
 
     onCancel() {
       this.isEditting = !this.isEditting;
-      this.text = this.comment.comment;
+      this.commentInput = this.comment.comment;
+    },
+  },
+  computed: {
+    createdAtFromNow() {
+      return moment(this.comment.updated_at).fromNow();
+    },
+    isUserComment() {
+      if (this.comment.userId === localStorage.getItem("id")) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };

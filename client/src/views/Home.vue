@@ -1,25 +1,36 @@
 <template>
-  <v-container fluid class="px-10 d-flex flex-column align-end">
-    <v-select
-      @change="onFilter"
-      class="mt-2"
-      :items="items"
-      label="Date"
-      solo
-    ></v-select>
-    <v-row wrap>
-      <BlogCard
-        v-for="blog in copiedBlogList"
-        :key="blog.id"
-        :title="blog.title"
-        :content="blog.content"
-        :image="blog.imagePath"
-        :id="blog.id"
-        :like="blog.like"
-        :category="blog.category"
-        :created_at="blog.created_at"
-      />
+  <v-container fluid class="px-10 d-flex flex-column">
+    <v-row v-if="isLoading" justify="center" class="mt-12">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
     </v-row>
+    <template v-else>
+      <v-select
+        @change="onFilter"
+        class="mt-2"
+        :items="items"
+        label="Date"
+        solo
+        :style="{ alignSelf: 'end' }"
+      ></v-select>
+      <v-row wrap>
+        <BlogCard
+          v-for="blog in copiedBlogList"
+          :key="blog.id"
+          :title="blog.title"
+          :content="blog.content"
+          :image="blog.imagePath"
+          :id="blog.id"
+          :like="blog.like"
+          :category="blog.category"
+          :createdAt="blog.created_at"
+        />
+      </v-row>
+    </template>
   </v-container>
 </template>
 
@@ -50,7 +61,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["copiedBlogList"]),
+    ...mapState(["copiedBlogList", "isLoading"]),
   },
 };
 </script>

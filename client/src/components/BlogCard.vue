@@ -12,7 +12,7 @@
             {{ category }}
           </v-chip></router-link
         >
-        <span>{{ created_at }}</span>
+        <span>{{ createdAtFromNow }}</span>
       </div>
       <v-divider class="mx-4"></v-divider>
       <v-card-actions>
@@ -21,7 +21,7 @@
         >
         <v-spacer></v-spacer>
         <v-btn text icon @click="onAddLike"
-          ><v-icon color="blue lighten-2" :disabled="!isLikedListener"
+          ><v-icon color="blue lighten-2" :disabled="!isLiked"
             >mdi-thumb-up</v-icon
           ></v-btn
         >
@@ -46,22 +46,14 @@ export default {
     category: {
       type: String,
     },
-    created_at: {
+    createdAt: {
       type: String,
     },
   },
   data() {
     return {
-      isLiked: false,
-    };
-  },
-  mounted() {
-    this.created_at = moment(this.created_at).fromNow();
-    this.like.map((item) => {
-      if (item === localStorage.getItem("id")) {
-        this.isLiked = true;
-      }
-    });
+      likes: this.like
+    }
   },
   methods: {
     ...mapActions(["addLike", "fetchBlogByCategory"]),
@@ -69,7 +61,13 @@ export default {
       this.$router.push(`/blog-detail/${this.id}`);
     },
     async onAddLike() {
-      this.isLikedListener = !this.isLiked;
+      if(this.isLiked){
+        this.likes = this.likes.filter(item=>{
+          return item != localStorage.getItem("id")
+        })
+      } else {
+        this.likes.push(localStorage.getItem("id"))
+      }
       await this.addLike(this.id);
     },
     onCategoryFilterd() {
@@ -77,9 +75,16 @@ export default {
     },
   },
   computed: {
-    isLikedListener() {
-      return this.isLiked;
+    createdAtFromNow(){
+      return moment(this.created_at).fromNow();
     },
+    isLiked(){
+      if([...this.likes].includes(localStorage.getItem("id"))){
+        return true
+      } else {
+        return false
+      }
+    }
   },
 };
 </script>

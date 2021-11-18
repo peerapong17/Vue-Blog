@@ -47,9 +47,9 @@ export class Blog extends BaseEntity {
   @OneToMany(() => Comment, (comment) => comment.blog)
   comments: Comment[];
 
-  @ManyToOne(() => User, (user) => user.blogs, { onDelete: 'CASCADE' })
-  @JoinColumn({name: "user_id"})
-  user: User
+  @ManyToOne(() => User, (user) => user.blogs, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "user_id" })
+  user: User;
 
   @CreateDateColumn()
   created_at: Date;

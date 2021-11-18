@@ -4,7 +4,9 @@ import { Blog } from "../../entity/Blog";
 export const getSpicificBlog = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const blog = await Blog.findOne(id, {relations: ['comments']});
+    const blog = await Blog.findOne(id, {
+      relations: ["comments"],
+    });
     if (!blog) {
       return res
         .status(404)
@@ -12,6 +14,6 @@ export const getSpicificBlog = async (req: Request, res: Response) => {
     }
     res.status(200).json({ blog: blog });
   } catch (error) {
-    res.status(400).json({ message: error.message});
+    res.status(400).json({ message: error.message });
   }
 };

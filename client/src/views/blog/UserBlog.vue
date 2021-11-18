@@ -8,7 +8,7 @@
         :content="blog.content"
         :image="blog.imagePath"
         :id="blog.id"
-        :like="blog.like"
+        :likes="blog.like"
       />
     </v-row>
   </v-container>

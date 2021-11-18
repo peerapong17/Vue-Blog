@@ -26,27 +26,42 @@
           ><v-icon>mdi-upload</v-icon></v-btn
         >
         <v-Text-field
-          :rules="[(v) => !!v || 'Title is required']"
+          :rules="[
+            (v) => !!v || 'Title is required',
+            (v) =>
+              /[a-z]{6,}/g.test(v) ||
+              'Title should contain at least 6 letter',
+          ]"
           v-model="title"
           filled
           label="Title"
           required
         />
         <v-textarea
-          :rules="[(v) => !!v || 'Content is required']"
+          :rules="[
+            (v) => !!v || 'Content is required',
+            (v) =>
+              (v && v.length >= 30) ||
+              'Content should be at least 30 characters long',
+          ]"
           v-model="content"
           filled
           label="Content"
           required
+          counter="30"
         />
-        <v-select :items="categories" filled label="Category" v-model="category"></v-select>
+        <v-select
+          :items="categories"
+          filled
+          label="Category"
+          v-model="category"
+          :rules="[(v) => !!v || 'Category is required']"
+        ></v-select>
         <div class="btn-container">
-          <v-btn @click="onCreateBlog" large  color="success" class="mr-2"
-          >Create</v-btn
-        >
-        <v-btn @click="onCancel" large dark color="red"
-          >Cancel</v-btn
-        >
+          <v-btn @click="onCreateBlog" large color="success" class="mr-2"
+            >Create</v-btn
+          >
+          <v-btn @click="onCancel" large dark color="red">Cancel</v-btn>
         </div>
       </v-form>
       <v-alert
@@ -118,8 +133,8 @@ export default {
 </script>
 
 <style>
-  .btn-container{
-    display: flex;
-    justify-content: flex-end;
-  }
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

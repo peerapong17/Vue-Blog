@@ -26,19 +26,35 @@
           ><v-icon>mdi-upload</v-icon></v-btn
         >
         <v-Text-field
-          :rules="[(v) => !!v || 'Title is required']"
+          :rules="[
+            (v) => !!v || 'Title is required',
+            (v) =>
+              /[a-z]{6,}/g.test(v) || 'Title should contain at least 6 letter',
+          ]"
           v-model="blog.title"
           filled
           label="Title"
           required
         />
         <v-textarea
-          :rules="[(v) => !!v || 'Content is required']"
+          :rules="[
+            (v) => !!v || 'Content is required',
+            (v) =>
+              (v && v.length >= 30) ||
+              'Content should be at least 30 characters long',
+          ]"
           v-model="blog.content"
           filled
           label="Content"
           required
         />
+        <v-select
+          :items="categories"
+          filled
+          label="Category"
+          v-model="blog.category"
+          :rules="[(v) => !!v || 'Category is required']"
+        ></v-select>
       </v-form>
       <v-row>
         <v-spacer></v-spacer>
@@ -62,7 +78,8 @@ import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      imageFile: "",
+      imageFile: null,
+      categories: ["Travel", "Food", "Culture", "Tradition"],
     };
   },
   async created() {
@@ -92,6 +109,7 @@ export default {
         content: this.blog.content,
         imageFile: this.imageFile,
         blogId: this.blog.id,
+        category: this.blog.category
       };
       await this.updateBlog(payload);
       this.$router.push("/user-blog");

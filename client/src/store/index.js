@@ -25,7 +25,7 @@ export default new Vuex.Store({
   mutations: {
     gotData(state, payload) {
       state.blogList = payload;
-      state.copiedBlogList = payload
+      state.copiedBlogList = payload;
     },
     updateData(state, payload) {
       state.blog = payload;
@@ -36,10 +36,10 @@ export default new Vuex.Store({
     createUserSuccess(state, payload) {
       state.success = payload;
     },
-    getBlogBySearchInput(state, value){
-      state.copiedBlogList = [...state.blogList].filter((blog)=>{
-        return blog.title.includes(value)
-      })
+    getBlogBySearchInput(state, value) {
+      state.copiedBlogList = [...state.blogList].filter((blog) => {
+        return blog.title.includes(value);
+      });
     },
     isLoading(state) {
       state.isLoading = true;
@@ -50,30 +50,32 @@ export default new Vuex.Store({
   },
   actions: {
     async fetchData(context) {
+      context.commit("isLoading");
       const { data } = await axios.request("http://localhost:3000/blog", {
         method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      data.blog.map(item=>{
-        console.log(item.created_at)
-        console.log(item.id)
-      })
       context.commit("gotData", data.blog);
+      context.commit("isNotLoading");
     },
 
     async fetchBlogByCategory(context, category) {
-      const { data } = await axios.request(`http://localhost:3000/blog/category/${category}`, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const { data } = await axios.request(
+        `http://localhost:3000/blog/category/${category}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
       context.commit("gotData", data.blogs);
     },
 
     async fetchSpicificData(context, payload) {
+      context.commit("isLoading");
       const { data } = await axios.request(
         `http://localhost:3000/blog/${payload}`,
         {
@@ -84,6 +86,7 @@ export default new Vuex.Store({
         }
       );
       context.commit("updateData", data.blog);
+      context.commit("isNotLoading");
     },
 
     async createBlog(context, payload) {
@@ -109,7 +112,8 @@ export default new Vuex.Store({
       const formData = new FormData();
       formData.append("title", payload.title);
       formData.append("content", payload.content);
-      if (payload.imageFile !== "") {
+      formData.append("category", payload.category);
+      if (payload.imageFile !== null) {
         formData.append("image", payload.imageFile);
       }
       try {
@@ -142,16 +146,13 @@ export default new Vuex.Store({
     },
 
     async addLike(context, payload) {
-      const { data } = await axios.request(
-        `http://localhost:3000/comment/like/${payload}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
-      context.commit("updateData", data.blog);
+      await axios.request(`http://localhost:3000/comment/like/${payload}`, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      // context.commit("updateData", data.blog);
     },
 
     async addComment(context, payload) {

@@ -6,12 +6,12 @@ export const updateBlog = async (req: Request, res: Response) => {
   try {
     const { id } = req.params as { id: string };
     if (req.file) {
-      const blogToUpdate = await Blog.findOne(id);
-      if (!blogToUpdate) {
+      const existingBlog = await Blog.findOne(id);
+      if (!existingBlog) {
         return res.status(404).json({ message: "No blog was found" });
       }
 
-      const filePath: string = process.cwd() + "/images/" + blogToUpdate.image;
+      const filePath: string = process.cwd() + "/images/" + existingBlog.image;
       fs.unlinkSync(filePath);
 
       const image = req.file.filename;
@@ -26,7 +26,7 @@ export const updateBlog = async (req: Request, res: Response) => {
       }
     }
 
-    const blog = await Blog.update({ id }, { ...req.body });
+    const blog = await Blog.update({ id }, req.body);
 
     if (blog.affected === 0) {
       return res.status(404).json({ message: "No blog was found" });
