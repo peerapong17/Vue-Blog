@@ -37,7 +37,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:8081", // <-- location of the angular app were connecting to
+    origin: "http://localhost:8080", // <-- location of the angular app were connecting to
     credentials: true,
   })
 );

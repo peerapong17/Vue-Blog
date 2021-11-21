@@ -5,7 +5,7 @@ export const getSpicificUser = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const user = await User.findOneOrFail(id);
+    const user = await User.findOneOrFail(id, { relations: ["comments"] });
     if (!user) {
       return res
         .status(400)

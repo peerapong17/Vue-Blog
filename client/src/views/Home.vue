@@ -41,6 +41,8 @@ export default {
   components: { BlogCard },
   props: {
     category: String,
+    token: String,
+    userId: String,
   },
   data() {
     return {
@@ -48,6 +50,10 @@ export default {
     };
   },
   async created() {
+    if (this.token && this.userId) {
+      localStorage.setItem("token", this.token);
+      localStorage.setItem("id", this.userId);
+    }
     await this.fetchData();
   },
   methods: {

@@ -12,6 +12,7 @@ export const getSpicificBlog = async (req: Request, res: Response) => {
         .status(404)
         .json({ message: "Blog with given Id does not exist" });
     }
+
     res.status(200).json({ blog: blog });
   } catch (error) {
     res.status(400).json({ message: error.message });

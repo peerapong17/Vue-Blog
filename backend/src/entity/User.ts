@@ -1,3 +1,4 @@
+import { Comment } from './Comment';
 import {
   Entity,
   Column,
@@ -24,19 +25,30 @@ export class User extends BaseEntity {
   @Column()
   username: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   email: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   password: string;
+
+  @Column({
+    nullable: true,
+  })
+  googleId: string;
 
   @OneToMany(() => Blog, (blog) => blog.user)
   blogs: Blog[];
+
+  // @OneToMany(() => Comment, (comment) => comment.user)
+  // comments: Comment[];
 
   @CreateDateColumn()
   public created_at: Date;
 
   @UpdateDateColumn()
   public updated_at: Date;
-
 }

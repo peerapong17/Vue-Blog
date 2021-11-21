@@ -11,7 +11,7 @@ import {
   BeforeInsert,
 } from "typeorm";
 import { v4 as uuid4 } from "uuid";
-
+import { User } from "./User";
 
 @Entity()
 export class Comment extends BaseEntity {
@@ -24,7 +24,10 @@ export class Comment extends BaseEntity {
   }
 
   @Column()
-  userId: string;
+  user_id: string;
+
+  @Column()
+  username: string;
 
   @Column()
   comment: string;
@@ -35,8 +38,11 @@ export class Comment extends BaseEntity {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => Blog, (blog) => blog.comments, { onDelete: 'CASCADE' })
-  @JoinColumn({name: "blog_id"})
-  blog: Blog
-  
+  // @ManyToOne(() => User, (user) => user.comments, { onDelete: "CASCADE" })
+  // @JoinColumn({ name: "user_id" })
+  // user: User;
+
+  @ManyToOne(() => Blog, (blog) => blog.comments, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "blog_id" })
+  blog: Blog;
 }

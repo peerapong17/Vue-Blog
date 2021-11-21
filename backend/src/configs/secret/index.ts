@@ -1,16 +1,16 @@
 const CLIENT_ID =
-  "298995432601-ru1tjpnqeu865lmnmhm98olepchustjb.apps.googleusercontent.com";
-const CLIENT_SECRET = "7X6jXeYFtPUQlbsgIgwY9n2f";
-const CALL_BACK_URL = "http://localhost:8080/home";
+  "1084241596843-4heff4vibmk7cl980t663ta77kcbe9vl.apps.googleusercontent.com";
+const CLIENT_SECRET = "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";
+const CALL_BACK_URL = "http://localhost:3000/auth/google/callback";
 const USER_PROFILE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 
-const MAIL_USERNAME = "17peerapong4.0@gmail.com";
+const MAIL_USERNAME = "02peerapong2.4@gmail.com";
 const MAIL_PASSWORD = "thisismypasswordnaja";
 const OAUTH_CLIENT_ID =
-  "298995432601-k3t07vjkstlc4il4uboh60c6utuc1kd8.apps.googleusercontent.com";
-const OAUTH_CLIENT_SECRET = "OHYPFe4PIwRYqHpsVY1awxRE";
+  "1084241596843-gktg7je1ngbveqdj6v06o9durd6m7p7d.apps.googleusercontent.com";
+const OAUTH_CLIENT_SECRET = "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";
 const OAUTH_REFRESH_TOKEN =
-  "1//041gYuODEhR-hCgYIARAAGAQSNwF-L9IrrTD5BuixtwrA_Z4N4zeCQhHslHUnQX_7oFr_Ep6xHd5o8QyX0KKkUoNxsdjKnfRiHYU";
+  "1//047SbkQm0MA2bCgYIARAAGAQSNwF-L9Ir6CMaMHfbmHneIJ8g8dKDuEaWgnXFrB9vx6aJt9wYKZins5VYu3q34TTI90wRhTm2ols";
 
 export default {
   CLIENT_ID,

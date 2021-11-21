@@ -7,7 +7,10 @@
       <v-img height="250" :src="image"></v-img>
       <v-card-text>{{ content.substring(0, 90) + "..." }}</v-card-text>
       <div class="d-flex justify-space-between mx-3 mb-2">
-        <router-link :to="{name: 'GetBlogByCategory', params: {category: category }}" class="category">
+        <router-link
+          :to="{ name: 'GetBlogByCategory', params: { category: category } }"
+          class="category"
+        >
           <v-chip small dark color="green">
             {{ category }}
           </v-chip></router-link
@@ -52,8 +55,11 @@ export default {
   },
   data() {
     return {
-      likes: this.like
-    }
+      likes: this.like,
+    };
+  },
+  mounted() {
+    console.log(this.createdAt);
   },
   methods: {
     ...mapActions(["addLike", "fetchBlogByCategory"]),
@@ -61,12 +67,12 @@ export default {
       this.$router.push(`/blog-detail/${this.id}`);
     },
     async onAddLike() {
-      if(this.isLiked){
-        this.likes = this.likes.filter(item=>{
-          return item != localStorage.getItem("id")
-        })
+      if (this.isLiked) {
+        this.likes = this.likes.filter((item) => {
+          return item != localStorage.getItem("id");
+        });
       } else {
-        this.likes.push(localStorage.getItem("id"))
+        this.likes.push(localStorage.getItem("id"));
       }
       await this.addLike(this.id);
     },
@@ -75,22 +81,22 @@ export default {
     },
   },
   computed: {
-    createdAtFromNow(){
-      return moment(this.created_at).fromNow();
+    createdAtFromNow() {
+      return moment(this.createdAt).fromNow();
     },
-    isLiked(){
-      if([...this.likes].includes(localStorage.getItem("id"))){
-        return true
+    isLiked() {
+      if ([...this.likes].includes(localStorage.getItem("id"))) {
+        return true;
       } else {
-        return false
+        return false;
       }
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
-  .category{
-    text-decoration: none;
-  }
+.category {
+  text-decoration: none;
+}
 </style>

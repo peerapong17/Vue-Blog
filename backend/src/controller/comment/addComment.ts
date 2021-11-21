@@ -1,3 +1,4 @@
+import { User } from "./../../entity/User";
 import { Request, Response } from "express";
 import { Comment } from "../../entity/Comment";
 import { Blog } from "../../entity/Blog";
@@ -5,8 +6,11 @@ import { Blog } from "../../entity/Blog";
 export const addComment = async (req: Request, res: Response) => {
   const { blog_id } = req.params;
   try {
+    console.log(blog_id);
+    console.log(req.user["id"]);
     const comment = new Comment();
     const blog = await Blog.findOne(blog_id, { relations: ["comments"] });
+    const user = await User.findOne(req.user["id"]);
 
     if (!blog) {
       return res
@@ -14,8 +18,8 @@ export const addComment = async (req: Request, res: Response) => {
         .json({ message: "Blog with given ID is not found" });
     }
 
-    comment.userId = req.user["id"];
-
+    comment.user_id = user.id;
+    comment.username = user.username;
     comment.comment = req.body.comment as string;
 
     await comment.save();

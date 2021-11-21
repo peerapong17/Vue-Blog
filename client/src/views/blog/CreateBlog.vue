@@ -29,7 +29,7 @@
           :rules="[
             (v) => !!v || 'Title is required',
             (v) =>
-              /[a-z]{6,}/g.test(v) ||
+              /[a-zA-Z\s]{6,}/g.test(v) ||
               'Title should contain at least 6 letter',
           ]"
           v-model="title"

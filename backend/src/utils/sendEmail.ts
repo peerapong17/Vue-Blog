@@ -6,10 +6,9 @@ export const sendEmail = async (
   subject: string,
   link: string
 ) => {
-
   try {
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      service: "gmail",
       auth: {
         type: "OAUTH2",
         user: process.MAIL_USERNAME,
@@ -20,22 +19,16 @@ export const sendEmail = async (
       },
     });
 
-    transporter
-      .sendMail({
-        from: process.MAIL_USERNAME,
-        to: email,
-        subject: subject,
-        html: `<a href="${link}"> Click here </a> to reset your password`,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await transporter.sendMail({
+      from: process.MAIL_USERNAME,
+      to: email,
+      subject: subject,
+      html: `<a href="${link}"> Click here </a> to reset your password`,
+    });
 
     console.log("email sent sucessfully");
   } catch (error) {
     console.log(error, "email not sent");
+    throw new Error("Could not send reset-password-link to your email");
   }
 };

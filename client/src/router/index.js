@@ -9,7 +9,7 @@ import CreateBlog from "../views/blog/CreateBlog.vue";
 import BlogDetail from "../views/blog/BlogDetail.vue";
 import UserBlog from "../views/blog/UserBlog.vue";
 import EditBlog from "../views/blog/EditBlog.vue";
-import BlogFiltedByCategory from "../views/blog/BlogFiltedByCategory.vue"
+import BlogFiltedByCategory from "../views/blog/BlogFiltedByCategory.vue";
 
 Vue.use(VueRouter);
 
@@ -50,13 +50,19 @@ const routes = [
   {
     path: "/home",
     name: "Home",
-    component: Home
+    component: Home,
+  },
+  {
+    path: "/home/:token/:userId",
+    name: "Home",
+    component: Home,
+    props: true,
   },
   {
     path: "/blog/category/:category",
     name: "GetBlogByCategory",
     component: BlogFiltedByCategory,
-    props: true
+    props: true,
   },
   {
     path: "/create-blog",

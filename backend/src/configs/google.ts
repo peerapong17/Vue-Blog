@@ -17,17 +17,32 @@ export const googlePassportConfigs = (passport: PassportStatic) => {
       },
       async (accessToken, refreshToken, profile, cb) => {
         console.log(profile);
-        const user: User = User.create({
-          email: profile.id,
-          username: profile.displayName ?? "No display name",
-        });
-        await user.save();
+        const user = await User.findOne({ googleId: profile.id });
+        console.log(user)
+        if (user) {
+          cb(null, user);
+        } else {
+          try {
+            const user = User.create({
+              email: profile.emails[0].value,
+              username: profile.displayName,
+              googleId: profile.id,
+            });
+
+            await user.save();
+
+            cb(null, user);
+          } catch (error) {
+            cb(error, null);
+          }
+        }
       }
     )
   );
 
   passport.serializeUser(function (user: User, done) {
     console.log("this is in serializeUser");
+    console.log(user);
     done(null, user.id);
     // this user'Id is store in req.session.passport.user
   });

@@ -65,20 +65,16 @@
         <v-card-title class="text-h5">
           Are you sure?
         </v-card-title>
-
         <v-card-text>
           You will be directed to the home page.
         </v-card-text>
-
         <v-card-actions>
           <v-spacer></v-spacer>
-
-          <v-btn text color="primary" @click="dialog = false">
-            cancel
-          </v-btn>
-
           <v-btn color="red lighten-1" class="white--text" @click="onLogout">
             OK
+          </v-btn>
+          <v-btn text color="primary" @click="dialog = false">
+            cancel
           </v-btn>
         </v-card-actions>
       </v-card>

@@ -47,7 +47,7 @@
     </v-row>
     <v-row class="px-4 pb-2">
       <span class="ml-2" :style="{ color: '#6e6e6e' }">{{
-        comment.userId
+        comment.username
       }}</span>
       <v-spacer></v-spacer>
       <span :style="{ color: '#adadad' }">{{ createdAtFromNow }}</span>
@@ -96,7 +96,7 @@ export default {
       return moment(this.comment.updated_at).fromNow();
     },
     isUserComment() {
-      if (this.comment.userId === localStorage.getItem("id")) {
+      if (this.comment.user_id === localStorage.getItem("id")) {
         return true;
       } else {
         return false;

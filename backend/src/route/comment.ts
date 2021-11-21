@@ -10,8 +10,14 @@ router.get(
   commentController.addLike
 );
 
+// router.get(
+//   "/:comment_id",
+//   passport.authenticate("jwt", { session: false }),
+//   commentController.getSpicificComment
+// );
+
 router.get(
-  "/:comment_id",
+  "/:blog_id",
   passport.authenticate("jwt", { session: false }),
   commentController.getSpicificComment
 );
